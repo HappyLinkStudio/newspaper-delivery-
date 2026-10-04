@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Newspaper Delivery Service - Jaunpur</title>
+    <link rel="icon" type="image/jpeg" href="papa.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap');
+        body { font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col justify-between">
+
+<header class="bg-blue-700 text-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <img src="papa.jpg" alt="Papa Photo" class="w-10 h-10 rounded-full object-cover border-2 border-yellow-300 shadow-sm">
+            <h1 class="text-lg md:text-xl font-bold" id="brand-title">Jaunpur News Delivery Hub</h1>
+        </div>
+        <div class="flex space-x-2 bg-blue-800 p-1 rounded-lg">
+            <button onclick="setLanguage('hi')" id="btn-hi" class="px-3 py-1 text-sm rounded-md font-medium bg-white text-blue-800 transition">हिंदी</button>
+            <button onclick="setLanguage('en')" id="btn-en" class="px-3 py-1 text-sm rounded-md font-medium text-white hover:bg-blue-600 transition">English</button>
+        </div>
+    </div>
+</header>
+
+<section class="bg-gradient-to-r from-yellow-400 to-amber-500 text-gray-900 py-6 px-4 shadow-inner text-center">
+    <div class="container mx-auto max-w-2xl">
+        <p id="banner-text" class="text-lg md:text-xl font-bold tracking-wide">
+            हमारे यहाँ जौनपुर में डेली टू डेली फ्रेश न्यूज़पेपर मिलता है | फॉर डिलीवरी कांटेक्ट अस
+        </p>
+        <div class="mt-2 text-sm font-bold text-red-700 bg-white/80 inline-block px-3 py-1 rounded-md mb-2">
+            📍 यह सेवा सिर्फ जौनपुर के लोगों के लिए है (Only for Jaunpur Residents)
+        </div>
+        <div class="mt-2 inline-flex items-center bg-white px-4 py-2 rounded-full shadow-sm text-sm font-semibold text-green-700">
+            <i class="fa-solid fa-phone-volume mr-2"></i>
+            <span id="contact-label">Contact:</span>&nbsp;<a href="tel:9651023133" class="underline">9651023133</a>
+        </div>
+    </div>
+</section>
+
+<main class="container mx-auto px-4 py-8 flex-grow max-w-4xl">
+    <div class="mb-8">
+        <div class="relative max-w-xl mx-auto">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-400">
+                <i class="fa-solid fa-search"></i>
+            </span>
+            <input type="text" id="searchInput" onkeyup="filterNewspapers()" placeholder="Search Newspaper / न्यूज़पेपर खोजें..." class="w-full pl-12 pr-4 py-3 rounded-full border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 bg-white">
+        </div>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-2 mb-8" id="category-filters">
+        <button onclick="filterCategory('all')" id="cat-all" class="px-4 py-2 rounded-full text-sm font-semibold bg-blue-600 text-white shadow transition">All / सभी</button>
+        <button onclick="filterCategory('Hindi')" id="cat-hindi" class="px-4 py-2 rounded-full text-sm font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition">Hindi / हिंदी</button>
+        <button onclick="filterCategory('English')" id="cat-english" class="px-4 py-2 rounded-full text-sm font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition">English / अंग्रेज़ी</button>
+        <button onclick="filterCategory('Urdu')" id="cat-urdu" class="px-4 py-2 rounded-full text-sm font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition">Urdu / उर्दू</button>
+    </div>
+
+    <div id="newspaperGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5"></div>
+
+    <div class="mt-12 text-center bg-blue-50 border border-blue-200 rounded-xl p-6 shadow-sm">
+        <p id="other-note" class="text-lg font-medium text-blue-900">
+            और अन्य न्यूज़पेपर भी उपलब्ध हैं (More newspapers are also available in Jaunpur)
+        </p>
+    </div>
+</main>
+
+<footer class="bg-gray-800 text-white py-6 mt-12 text-center text-sm">
+    <div class="container mx-auto px-4">
+        <p id="footer-text">Daily Newspaper Home Delivery Service - Jaunpur</p>
+        <p class="mt-1 text-gray-400">Helpline: 9651023133</p>
+    </div>
+</footer>
+
+<script>
+const langData = {
+    hi: {
+        brandTitle: "जौनपुर न्यूज़पेपर होम डिलीवरी",
+        bannerText: "हमारे यहाँ जौनपुर में डेली टू डेली फ्रेश न्यूज़पेपर मिलता है | फॉर डिलीवरी कांटेक्ट अस",
+        contactLabel: "संपर्क करें:",
+        searchPlaceholder: "यहाँ न्यूज़पेपर का नाम खोजें...",
+        buyNowText: "अभी खरीदें (Buy Now)",
+        otherNote: "और अन्य न्यूज़पेपर भी उपलब्ध हैं",
+        footerText: "दैनिक समाचार पत्र होम डिलीवरी सेवा - जौनपुर"
+    },
+    en: {
+        brandTitle: "Jaunpur Newspaper Home Delivery",
+        bannerText: "Fresh daily newspapers available in Jaunpur. Contact us for delivery!",
+        contactLabel: "Contact:",
+        searchPlaceholder: "Search newspaper name...",
+        buyNowText: "Buy Now",
+        otherNote: "More newspapers are also available upon request in Jaunpur.",
+        footerText: "Daily Newspaper Home Delivery Service - Jaunpur"
+    }
+};
+
+let currentLang = 'hi';
+
+const newspapers = [
+    { nameHi: "दैनिक जागरण", nameEn: "Dainik Jagran", category: "Hindi", icon: "fa-solid fa-paper-newspaper" },
+    { nameHi: "अमर उजाला", nameEn: "Amar Ujala", category: "Hindi", icon: "fa-solid fa-newspaper" },
+    { nameHi: "हिन्दुस्तान", nameEn: "Hindustan", category: "Hindi", icon: "fa-solid fa-file-lines" },
+    { nameHi: "दैनिक भास्कर", nameEn: "Dainik Bhaskar", category: "Hindi", icon: "fa-solid fa-newspaper" },
+    { nameHi: "जनसत्ता", nameEn: "Jansatta", category: "Hindi", icon: "fa-solid fa-file-contract" },
+    { nameHi: "टाइम्स ऑफ़ इण्डिया", nameEn: "Times of India", category: "English", icon: "fa-solid fa-globe" },
+    { nameHi: "हिन्दुस्तान टाइम्स", nameEn: "Hindustan Times", category: "English", icon: "fa-solid fa-book-open" },
+    { nameHi: "द हिन्दू", nameEn: "The Hindu", category: "English", icon: "fa-solid fa-newspaper" },
+    { nameHi: "इकोनॉमिक टाइम्स", nameEn: "Economic Times", category: "English", icon: "fa-solid fa-chart-line" },
+    { nameHi: "उर्दू न्यूज़पेपर", nameEn: "Urdu Newspaper", category: "Urdu", icon: "fa-solid fa-language" }
+];
+
+let activeCategory = 'all';
+
+function renderNewspapers(filterText = '', categoryFilter = 'all') {
+    const grid = document.getElementById('newspaperGrid');
+    grid.innerHTML = '';
+
+    const filtered = newspapers.filter(item => {
+        const matchesSearch = item.nameHi.toLowerCase().includes(filterText.toLowerCase()) ||
+                              item.nameEn.toLowerCase().includes(filterText.toLowerCase());
+        const matchesCategory = categoryFilter === 'all' || item.category === categoryFilter;
+        return matchesSearch && matchesCategory;
+    });
+
+    if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center py-8 text-gray-500">कोई परिणाम नहीं मिला / No newspaper found</div>`;
+        return;
+    }
+
+    filtered.forEach(news => {
+        const buyText = langData[currentLang].buyNowText;
+        const phoneNumber = "9651023133";
+        const whatsappMessage = encodeURIComponent(`Hello, I want to order ${news.nameEn} (${news.nameHi}) newspaper for delivery in Jaunpur.`);
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${whatsappMessage}`;
+
+        const card = document.createElement('div');
+        card.className = "bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition";
+        card.innerHTML = `
+            <div>
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-blue-600 text-xl"><i class="${news.icon}"></i></span>
+                    <span class="text-xs font-semibold px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full">${news.category}</span>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800 mb-1">${news.nameEn}</h3>
+                <p class="text-base text-gray-600 font-medium mb-4">${news.nameHi}</p>
+            </div>
+            <a href="${whatsappUrl}" target="_blank" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg text-center transition flex items-center justify-center space-x-2">
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+                <span>${buyText}</span>
+            </a>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function filterNewspapers() {
+    const query = document.getElementById('searchInput').value;
+    renderNewspapers(query, activeCategory);
+}
+
+function filterCategory(cat) {
+    activeCategory = cat;
+
+    ['all', 'hindi', 'english', 'urdu'].forEach(c => {
+        const btn = document.getElementById(`cat-${c}`);
+        if (c === cat.toLowerCase()) {
+            btn.className = "px-4 py-2 rounded-full text-sm font-semibold bg-blue-600 text-white shadow transition";
+        } else {
+            btn.className = "px-4 py-2 rounded-full text-sm font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition";
+        }
+    });
+
+    const query = document.getElementById('searchInput').value;
+    renderNewspapers(query, activeCategory);
+}
+
+function setLanguage(lang) {
+    currentLang = lang;
+    const data = langData[lang];
+
+    document.getElementById('brand-title').innerText = data.brandTitle;
+    document.getElementById('banner-text').innerText = data.bannerText;
+    document.getElementById('contact-label').innerText = data.contactLabel;
+    document.getElementById('searchInput').placeholder = data.searchPlaceholder;
+    document.getElementById('other-note').innerText = data.otherNote;
+    document.getElementById('footer-text').innerText = data.footerText;
+
+    if (lang === 'hi') {
+        document.getElementById('btn-hi').className = "px-3 py-1 text-sm rounded-md font-medium bg-white text-blue-800 transition";
+        document.getElementById('btn-en').className = "px-3 py-1 text-sm rounded-md font-medium text-white hover:bg-blue-600 transition";
+    } else {
+        document.getElementById('btn-en').className = "px-3 py-1 text-sm rounded-md font-medium bg-white text-blue-800 transition";
+        document.getElementById('btn-hi').className = "px-3 py-1 text-sm rounded-md font-medium text-white hover:bg-blue-600 transition";
+    }
+
+    const query = document.getElementById('searchInput').value;
+    renderNewspapers(query, activeCategory);
+}
+
+renderNewspapers();
+</script>
+</body>
+</html>
